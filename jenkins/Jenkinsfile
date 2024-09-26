@@ -13,6 +13,7 @@ pipeline {
             steps {
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
+                sh 'npm run build'
             }
         }
         stage('Test') {
