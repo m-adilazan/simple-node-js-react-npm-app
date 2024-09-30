@@ -12,19 +12,29 @@ pipeline {
         APP_PATH = '/simple-node-js-react-npm-app'
     }
     stages {
-        stage('prerequisite-build'){
+        stage('Install Sudo and SSH Client') {
             steps {
-            script {
+                script {
+                    // Define the shell script to install sudo and openssh-client
                     def installPackagesScript = '''
                         #!/bin/sh
+                        
+                        # Update the package index (optional, but recommended)
                         apk update
-                        apk add --no-cache sudo
+
+                        # Install the sudo package and openssh-client
+                        apk add --no-cache sudo openssh-client
+
+                        # Add the Jenkins user to the wheel group
                         adduser jenkins wheel
+
+                        # Allow users in the wheel group to run any command
                         echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
                     '''
-                    sh installPackagesScript
+                    
+                    // Execute the shell script as a superuser
+                    sh "echo '${installPackagesScript}' | sudo sh"
                 }
-                
             }
         }
         stage('Build') {
