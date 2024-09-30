@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'node:22-alpine3.19'
             args '-p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock'
+            args '-u root'
         }
     }
     environment {
@@ -14,6 +15,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'apk add --no-cache openssh'
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
                 sh 'npm run build'
@@ -28,7 +30,6 @@ pipeline {
             steps {
                 sshagent(['a6167c9b-e084-4ad5-87e3-ce99c295fdb3']) {
                     sh '''
-                        # Run SSH commands on the Jenkins host instead of inside Docker
                         ssh -o StrictHostKeyChecking=no azusr@${VM_IP} "cd ${REMOTE_PATH} && npm install && npm start &"
                     '''            
                 }
