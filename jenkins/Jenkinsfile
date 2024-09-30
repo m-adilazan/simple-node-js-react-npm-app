@@ -24,12 +24,6 @@ pipeline {
 
                         # Install the sudo package and openssh-client
                         apk add --no-cache sudo openssh-client
-
-                        # Add the Jenkins user to the wheel group
-                        adduser -D -G wheel jenkins
-
-                        # Allow users in the wheel group to run any command
-                        echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
                     '''
                     
                     // Execute the shell script as root
