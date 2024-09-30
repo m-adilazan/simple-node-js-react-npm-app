@@ -12,37 +12,6 @@ pipeline {
         APP_PATH = '/simple-node-js-react-npm-app'
     }
     stages {
-        stage('Create Dockerfile') {
-            steps {
-                script {
-                    // Create the Dockerfile dynamically
-                    writeFile file: 'Dockerfile', text: '''
-                        # Use the official Node.js 22 image based on Alpine
-                        FROM node:22-alpine
-
-                        # Set the working directory
-                        WORKDIR /usr/src/app
-
-                        # Copy package.json and package-lock.json
-                        COPY package*.json ./
-
-                        RUN apk add --no-cache openssh-client
-
-                        # Install dependencies
-                        RUN npm install
-
-                        # Copy the rest of the application files
-                        COPY . .
-
-                        # Expose the application port
-                        EXPOSE 3000
-
-                        # Command to run the application
-                        CMD ["npm", "start"]
-                    '''
-                }
-            }
-        }
         stage('Build') {
             steps {
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
