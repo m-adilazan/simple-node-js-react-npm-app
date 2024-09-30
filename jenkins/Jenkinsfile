@@ -26,6 +26,8 @@ pipeline {
                         # Copy package.json and package-lock.json
                         COPY package*.json ./
 
+                        RUN apk add --no-cache openssh-client
+
                         # Install dependencies
                         RUN npm install
 
