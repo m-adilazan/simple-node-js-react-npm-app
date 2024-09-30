@@ -12,28 +12,8 @@ pipeline {
         APP_PATH = '/simple-node-js-react-npm-app'
     }
     stages {
-        stage('Install Sudo and SSH Client') {
-            steps {
-                script {
-                    // Define the shell script to install sudo and openssh-client
-                    def installPackagesScript = '''
-                        #!/bin/sh
-                        
-                        # Update the package index (optional, but recommended)
-                        apk update
-
-                        # Install the sudo package and openssh-client
-                        apk add --no-cache sudo openssh-client
-                    '''
-                    
-                    // Execute the shell script as root
-                    sh "echo '${installPackagesScript}' | sh"
-                }
-            }
-        }
         stage('Build') {
             steps {
-                sh 'sudo apk add --no-cache openssh-client'
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
                 sh 'npm run build'
