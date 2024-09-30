@@ -26,14 +26,13 @@ pipeline {
         }
         stage('Deploy Application') {
             steps {
-                 script {
-            sshagent(['a6167c9b-e084-4ad5-87e3-ce99c295fdb3']) {
-                sh '''
-                    # Run SSH commands on the Jenkins host instead of inside Docker
-                    ssh -o StrictHostKeyChecking=no azusr@${VM_IP} "cd ${REMOTE_PATH} && npm install && npm start &"
-                '''            }
-            input message: 'Finished using the web site? (Click "Proceed" to continue)'
-        }
+                sshagent(['a6167c9b-e084-4ad5-87e3-ce99c295fdb3']) {
+                    sh '''
+                        # Run SSH commands on the Jenkins host instead of inside Docker
+                        ssh -o StrictHostKeyChecking=no azusr@${VM_IP} "cd ${REMOTE_PATH} && npm install && npm start &"
+                    '''            
+                }
+                    input message: 'Finished using the web site? (Click "Proceed" to continue)'
             }
         }
     }
