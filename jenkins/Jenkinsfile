@@ -12,9 +12,15 @@ pipeline {
         APP_PATH = '/simple-node-js-react-npm-app'
     }
     stages {
+        stage('prerequisite-build'){
+            steps {
+                sh 'apk update'
+                sh 'apk add sudo'
+                sh 'sudo apk add --no-cache openssh-client'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'sudo apk add --no-cache openssh-client'
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
                 sh 'npm run build'
