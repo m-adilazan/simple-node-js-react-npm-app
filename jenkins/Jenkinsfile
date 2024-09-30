@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'apk add --no-cache openssh-client'
+                sh 'sudo apk add --no-cache openssh-client'
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
                 sh 'npm run build'
