@@ -13,6 +13,7 @@ pipeline {
     }
     stages {
         stage('prerequisite-build'){
+            steps {
             script {
                     def installPackagesScript = '''
                         #!/bin/sh
@@ -23,6 +24,8 @@ pipeline {
                     '''
                     sh installPackagesScript
                 }
+                
+            }
         }
         stage('Build') {
             steps {
