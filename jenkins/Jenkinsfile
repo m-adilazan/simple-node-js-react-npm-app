@@ -13,14 +13,20 @@ pipeline {
     }
     stages {
         stage('prerequisite-build'){
-            steps {
-                sh 'apk update'
-                sh 'apk add sudo'
-                sh 'sudo apk add --no-cache openssh-client'
-            }
+            script {
+                    def installPackagesScript = '''
+                        #!/bin/sh
+                        apk update
+                        apk add --no-cache sudo
+                        adduser jenkins wheel
+                        echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+                    '''
+                    sh installPackagesScript
+                }
         }
         stage('Build') {
             steps {
+                sh 'sudo apk add --no-cache openssh-client'
                 git 'https://github.com/m-adilazan/simple-node-js-react-npm-app.git'
                 sh 'npm install'
                 sh 'npm run build'
